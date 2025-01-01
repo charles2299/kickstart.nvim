@@ -229,6 +229,12 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  'preservim/nerdtree',
+  {
+    'ThePrimeagen/harpoon',
+    branch = 'harpoon2',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+  },
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -464,6 +470,7 @@ require('lazy').setup({
       -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
       { 'j-hui/fidget.nvim', opts = {} },
+      { 'folke/neodev.nvim', opts = {} },
 
       -- Allows extra capabilities provided by nvim-cmp
       'hrsh7th/cmp-nvim-lsp',
@@ -643,6 +650,34 @@ require('lazy').setup({
             },
           },
         },
+        ruff = {},
+        pylsp = {
+          settings = {
+            pylsp = {
+              plugins = {
+                pycodestyle = { enabled = false },
+                autopep8 = {
+                  enabled = false,
+                },
+                yapf = {
+                  enabled = false,
+                },
+                mccabe = {
+                  enabled = false,
+                },
+                pyflakes = {
+                  enabled = false,
+                },
+                pylsp_black = { enabled = false },
+                pylsb_isort = { enabled = false },
+                pylsp_mypy = {
+                  enabled = true,
+                  strict = false,
+                }, -- :PylspInstall pylsp-mypy
+              },
+            },
+          },
+        },
       }
 
       -- Ensure the servers and tools above are installed
@@ -786,13 +821,13 @@ require('lazy').setup({
           -- Accept ([y]es) the completion.
           --  This will auto-import if your LSP supports it.
           --  This will expand snippets if the LSP sent a snippet.
-          ['<C-y>'] = cmp.mapping.confirm { select = true },
+          -- ['<C-y>'] = cmp.mapping.confirm { select = true },
 
           -- If you prefer more traditional completion keymaps,
           -- you can uncomment the following lines
-          --['<CR>'] = cmp.mapping.confirm { select = true },
-          --['<Tab>'] = cmp.mapping.select_next_item(),
-          --['<S-Tab>'] = cmp.mapping.select_prev_item(),
+          ['<CR>'] = cmp.mapping.confirm { select = true },
+          ['<Tab>'] = cmp.mapping.select_next_item(),
+          ['<S-Tab>'] = cmp.mapping.select_prev_item(),
 
           -- Manually trigger a completion from nvim-cmp.
           --  Generally you don't need this, because nvim-cmp will display
@@ -967,5 +1002,29 @@ require('lazy').setup({
   },
 })
 
+---- Setup python.
+vim.keymap.set('n', '<leader>sp', function()
+  vim.cmd [[PylspInstall pylsp-mypy]]
+end, { desc = '[S]etup [P]ython' })
+
+vim.keymap.set('n', '<leader>f', function()
+  vim.lsp.buf.format()
+end, { desc = '[S]etup [P]ython' })
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+--
+--
+
+-- Custom for starting up nerdtree at startup
+
+vim.api.nvim_create_autocmd('VimEnter', {
+  callback = function()
+    vim.cmd 'NERDTree'
+  end,
+})
+vim.api.nvim_create_autocmd('VimEnter', {
+  callback = function()
+    vim.cmd 'wincmd p'
+  end,
+})
