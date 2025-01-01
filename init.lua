@@ -419,6 +419,41 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 
+      local harpoon = require 'harpoon'
+
+      harpoon:setup()
+
+      vim.keymap.set('n', '<leader>ha', function()
+        harpoon:list():add()
+      end)
+      vim.keymap.set('n', '<leader>l', function()
+        harpoon.ui:toggle_quick_menu(harpoon:list())
+      end)
+      -- vim.keymap.set('n', '<C-e>', function()
+      --   harpoon.ui:toggle_quick_menu(harpoon:list())
+      -- end)
+      --
+      -- vim.keymap.set('n', '<C-h>', function()
+      --   harpoon:list():select(1)
+      -- end)
+      -- vim.keymap.set('n', '<C-t>', function()
+      --   harpoon:list():select(2)
+      -- end)
+      -- vim.keymap.set('n', '<C-n>', function()
+      --   harpoon:list():select(3)
+      -- end)
+      -- vim.keymap.set('n', '<C-s>', function()
+      --   harpoon:list():select(4)
+      -- end)
+      --
+      -- -- Toggle previous & next buffers stored within Harpoon list
+      -- vim.keymap.set('n', '<C-S-P>', function()
+      --   harpoon:list():prev()
+      -- end)
+      -- vim.keymap.set('n', '<C-S-N>', function()
+      --   harpoon:list():next()
+      -- end)
+
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
         -- You can pass additional configuration to Telescope to change the theme, layout, etc.
@@ -470,7 +505,6 @@ require('lazy').setup({
       -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
       { 'j-hui/fidget.nvim', opts = {} },
-      { 'folke/neodev.nvim', opts = {} },
 
       -- Allows extra capabilities provided by nvim-cmp
       'hrsh7th/cmp-nvim-lsp',
@@ -650,7 +684,7 @@ require('lazy').setup({
             },
           },
         },
-        ruff = {},
+        -- ruff = {},
         pylsp = {
           settings = {
             pylsp = {
