@@ -684,7 +684,7 @@ require('lazy').setup({
             },
           },
         },
-        -- ruff = {},
+        ruff = {},
         pylsp = {
           settings = {
             pylsp = {
@@ -1036,10 +1036,22 @@ require('lazy').setup({
   },
 })
 
+-- require('lspconfig').ruff.setup {
+--   init_options = {
+--     settings = {
+--       -- Ruff language server settings go here
+--     },
+--   },
+-- }
+
 ---- Setup python.
 vim.keymap.set('n', '<leader>sp', function()
   vim.cmd [[PylspInstall pylsp-mypy]]
 end, { desc = '[S]etup [P]ython' })
+
+vim.keymap.set('n', '<leader>spr', function()
+  vim.cmd [[!pip install ruff]]
+end, { desc = '[S]etup [P]ython [R]uff' })
 
 vim.keymap.set('n', '<leader>f', function()
   vim.lsp.buf.format()
