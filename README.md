@@ -236,3 +236,9 @@ sudo pacman -S --noconfirm --needed gcc make git ripgrep fd unzip neovim
 ```
 </details>
 
+Custom steps notes:
+If using NvimTree, make sure to install the nerd font so that folder icons will show up.
+```
+brew install font-hack-nerd-font
+```
+Also, if using mason-lspconfig, make sure to update nvim to 0.11 or later (else vim.lsp.enable will be missing)
