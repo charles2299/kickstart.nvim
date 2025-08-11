@@ -229,13 +229,20 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
-  'preservim/nerdtree',
+  -- 'preservim/nerdtree',
   {
     'ThePrimeagen/harpoon',
     branch = 'harpoon2',
     dependencies = { 'nvim-lua/plenary.nvim' },
   },
-
+  { -- Nvim tree
+    'nvim-tree/nvim-tree.lua',
+    lazy = true,
+    dependencies = {
+      'nvim-tree/nvim-web-devicons',
+    },
+  },
+  { 'nvim-tree/nvim-web-devicons', opts = {} },
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
@@ -730,7 +737,10 @@ require('lazy').setup({
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
+      -- Some testing comment
       require('mason-lspconfig').setup {
+        ensure_installed = {},
+        automatic_installation = false,
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
@@ -1057,6 +1067,32 @@ vim.keymap.set('n', '<leader>f', function()
   vim.lsp.buf.format()
 end, { desc = '[S]etup [P]ython' })
 
+----- Nvim Tree startup
+-- disable netrw at the very start of your init.lua
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
+-- optionally enable 24-bit colour
+vim.opt.termguicolors = true
+
+-- empty setup using defaults
+require('nvim-tree').setup()
+
+-- OR setup with some options
+-- require("nvim-tree").setup({
+--   sort = {
+--     sorter = "case_sensitive",
+--   },
+--   view = {
+--     width = 30,
+--   },
+--   renderer = {
+--     group_empty = true,
+--   },
+--   filters = {
+--     dotfiles = true,
+--   },
+-- })
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 --
@@ -1066,7 +1102,7 @@ end, { desc = '[S]etup [P]ython' })
 
 vim.api.nvim_create_autocmd('VimEnter', {
   callback = function()
-    vim.cmd 'NERDTree'
+    vim.cmd 'NvimTreeOpen'
   end,
 })
 vim.api.nvim_create_autocmd('VimEnter', {
